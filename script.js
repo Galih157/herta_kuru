@@ -1,6 +1,9 @@
 //varible
 const audioList = [
     new Audio("audio/haha.wav"),
+    new Audio("audio/haha.wav"),
+    new Audio("audio/haha.wav"),
+    new Audio("audio/haha.wav"),
 ];
 
 for (const audio of audioList) {
