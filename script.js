@@ -1,8 +1,6 @@
 //varible
 const audioList = [
-    new Audio("audio/kuruto.mp3"),
-    new Audio("audio/kuru1.mp3"),
-    new Audio("audio/kuru2.mp3"),
+    new Audio("audio/haha.wav"),
 ];
 
 for (const audio of audioList) {
@@ -21,59 +19,16 @@ let localCount = localStorage.getItem('count-v2') || 0;
 // stores counts from clicks until 5 seconds have passed without a click
 let heldCount = 0;
 
-function getGlobalCount() {
-    fetch('https://kuru-kuru-count-api.onrender.com/sync', { method: 'GET'})
-        .then((response) => response.json())
-        .then((data) => {
-            globalCount = data.count;
-            // animate counter starting from current value to the updated value
-            const startingCount = parseInt(globalCounter.textContent.replace(/,/g, ''));
-            (animateCounter = () => {
-                const currentCount = parseInt(globalCounter.textContent.replace(/,/g, ''));
-                const time = (globalCount - startingCount) / 200; // speed
-                if (currentCount < globalCount) {
-                    globalCounter.textContent = Math.ceil(currentCount + time).toLocaleString('en-US');
-                    setTimeout(animateCounter, 1);
-                } else {
-                    globalCounter.textContent = globalCount.toLocaleString('en-US');
-                }
-            })()
-        })
-        .catch((err) => console.error(err));
-}
 // initialize counters
 localCounter.textContent = localCount.toLocaleString('en-US');
-getGlobalCount();
 
 let prevTime = 0;
-// update global count every 10 seconds when tab is visible
-setInterval(() => {
-    if (document.hasFocus() && getTimePassed() - prevTime > 10000) {
-        getGlobalCount();
-        prevTime = getTimePassed();
-    }
-}, 10000);
-
 function update(e, resetCount=true) {
     // update global count
     const data = {
         count: heldCount,
         e: e // check if request is triggered by event
     };
-
-    fetch('https://kuru-kuru-count-api.onrender.com/update', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-        .then(() => {
-            // update local count
-            localStorage.setItem('count-v2', localCount);
-            if (resetCount) heldCount = 0;
-        })
-        .catch((err) => console.error(err));
 }
 
 let timer;
